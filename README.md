@@ -16,17 +16,6 @@
 
 ---
 
-## 🛠 Technologies Used
-| Language / Tool | Purpose |
-|----------------|---------|
-| Python         | Data processing & analysis |
-| Pandas         | Data cleaning & manipulation |
-| Numpy          | Numerical operations |
-| Matplotlib / Seaborn | Visualization |
-| Jupyter Notebook | Interactive analysis |
-
----
-
 ## Problem Statement
 The objective of this project was to analyze the cost and revenue structure of a food delivery business to determine overall profitability and identify key factors affecting profit per order. The goal was to understand whether the current pricing and discount strategy was sustainable and to recommend changes to improve profitability.
 
@@ -92,6 +81,77 @@ Operational costs can be reduced through delivery optimization.
 Overall business sustainability and profitability will improve.
 
 ---
+
+## SQL Analysis Section 
+
+Columns:
+order_id
+city
+order_value
+delivery_fee
+discount
+commission
+payment_fee
+delivery_time
+profit
+
+## Top 10 Cities by Profit
+SELECT city,
+       SUM(profit) AS total_profit
+FROM orders
+GROUP BY city
+ORDER BY total_profit DESC
+LIMIT 10;
+
+---
+
+## Average Profit Per Order
+SELECT AVG(profit) AS avg_profit_per_order
+FROM orders;
+
+---
+
+## Profit by Discount Range
+SELECT 
+    CASE 
+        WHEN discount = 0 THEN 'No Discount'
+        WHEN discount BETWEEN 1 AND 50 THEN 'Low Discount'
+        WHEN discount BETWEEN 51 AND 100 THEN 'Medium Discount'
+        ELSE 'High Discount'
+    END AS discount_range,
+    AVG(profit) AS avg_profit
+FROM orders
+GROUP BY discount_range
+ORDER BY avg_profit DESC;
+
+---
+
+## Profit by Delivery Time
+SELECT 
+    CASE 
+        WHEN delivery_time < 20 THEN 'Fast Delivery'
+        WHEN delivery_time BETWEEN 20 AND 40 THEN 'Medium Delivery'
+        ELSE 'Slow Delivery'
+    END AS delivery_speed,
+    AVG(profit) AS avg_profit
+FROM orders
+GROUP BY delivery_speed
+ORDER BY avg_profit DESC;
+
+---
+
+## Profit by Order Value
+SELECT 
+    CASE 
+        WHEN order_value < 200 THEN 'Low Value'
+        WHEN order_value BETWEEN 200 AND 500 THEN 'Medium Value'
+        ELSE 'High Value'
+    END AS order_value_range,
+    AVG(profit) AS avg_profit
+FROM orders
+GROUP BY order_value_range
+ORDER BY avg_profit DESC;
+
 
 ## 📊 How to Run This Project
 1. Clone this repository:
